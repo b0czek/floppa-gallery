@@ -1,0 +1,17 @@
+{
+  "name": "floppa-gallery",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^16.6.0",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "socket.io": "^4.1.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "node dist/index.js"
+  }
+}
