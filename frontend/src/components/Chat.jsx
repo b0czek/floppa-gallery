@@ -1,45 +1,123 @@
 import io from "socket.io-client";
 import React from "react";
 
-import Message from "./Message";
+import floppa from "../imgs/floppa.gif";
+import "./Chat.css";
+import ChatHeader from "./ChatHeader";
+import ChatActiveUsers from "./ChatActiveUsers";
 
-const Chat = (props) => {
-    const [activeConnections, setActiveConnections] = React.useState(0);
-    const [messages, setMessages] = React.useState([]);
+import Message from "./ChatMessage";
 
-    React.useEffect(() => {
-        const socket = io("http://localhost:3000/chat");
+class Chat extends React.Component {
+    state = {
+        activeConnections: 0,
+        messages: [],
+        author: "",
+        text: "",
+    };
 
-        socket.on("connect", () => {
-            socket.emit("activeConnections");
-            socket.on("activeConnections", (connections) => {
-                setActiveConnections(connections);
+    scrollToBottom = () => this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value,
+        });
+    };
+    // returns true if there was a slur
+    checkForRacialSlur = (str) => {
+        if (str.includes("nigger")) {
+            let punishmentUrl = `${document.location.protocol}//${document.location.host}/punishment.zip`;
+
+            const link = document.createElement("a");
+            link.href = punishmentUrl;
+            // randomize the end of the name so file downloads everytime
+            link.setAttribute(
+                "download",
+                `Ski Mask The Slump God - The Sin City Mixtape #${Math.floor(Math.random() * 10e6)}`
+            );
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+            return true;
+        }
+        return false;
+    };
+
+    sendMessage = () => {
+        if (
+            this.checkForRacialSlur(this.state.text) ||
+            this.checkForRacialSlur(this.state.author)
+        ) {
+            return;
+        }
+        this.socket.emit("sendMessage", {
+            text: this.state.text,
+            author: this.state.author,
+        });
+        this.setState({ text: "" });
+    };
+
+    componentDidMount() {
+        let port = process.env.NODE_ENV ? "3001" : document.location.port;
+        this.socket = io(
+            `${document.location.protocol}//${document.location.hostname}:${port}/chat`
+        );
+        this.socket.on("connect", () => {
+            this.socket.emit("activeConnections");
+            this.socket.on("activeConnections", (connections) => {
+                this.setState({ activeConnections: connections });
             });
-            socket.emit("messages", (messages) => {
-                setMessages(messages);
+            this.socket.emit("messages", (messages) => {
+                this.setState({ messages });
+                this.scrollToBottom();
+            });
+            this.socket.on("newMessage", (message) => {
+                this.setState((prevState) => ({ messages: prevState.messages.concat(message) }));
+                this.scrollToBottom();
             });
         });
-        /**
-         * testing purposes
-         */
-        let messageCount = Math.floor(Math.random() * 15);
-        for (let i = 0; i < messageCount; i++) {
-            socket.emit("sendMessage", {
-                text: i,
-                author: "twoja stara",
-            });
-        }
-    }, []);
+    }
 
-    return (
-        <div>
-            activeConnections: {activeConnections}
-            <div style={{ width: "30%" }}>
-                {messages.map((message, index) => (
-                    <Message key={index} message={message} />
-                ))}
+    componentWillUnmount() {
+        this.socket.disconnect();
+        this.socket.close();
+    }
+
+    render() {
+        return (
+            <div className="chatContainer">
+                <ChatActiveUsers count={this.state.activeConnections} />
+                <ChatHeader headerText="Floppa Chat" />
+                <div className="messages" style={{ backgroundImage: `url(${floppa})` }}>
+                    {this.state.messages.map((message, index) => (
+                        <Message key={index} message={message} />
+                    ))}
+                    <div
+                        ref={(el) => {
+                            this.messagesEnd = el;
+                        }}
+                    ></div>
+                </div>
+                <div className="controls">
+                    <input
+                        type="text"
+                        name="author"
+                        value={this.state.author}
+                        onChange={this.handleChange}
+                        placeholder="Name"
+                    />
+                    <input
+                        type="text"
+                        name="text"
+                        value={this.state.text}
+                        onChange={this.handleChange}
+                        placeholder="Message"
+                    />
+                    <input type="submit" value="Send" onClick={this.sendMessage} />
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+}
+
 export default Chat;
