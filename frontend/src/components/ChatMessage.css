@@ -1,0 +1,25 @@
+.messageContainer {
+    margin-top: 10px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    padding: 5px;
+}
+.messageAuthor {
+    padding-left: 5px;
+    padding-right: 10px;
+    font-weight: bold;
+}
+.messageHeader {
+    display: flex;
+    align-items: flex-end;
+}
+.messageDate {
+    color: #ccc;
+    font-size: 0.75rem;
+    margin-left: auto;
+}
+
+.messageText {
+    padding-left: 10px;
+}
