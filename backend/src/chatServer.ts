@@ -42,8 +42,8 @@ export default class ChatServer {
                     author: messageData.author,
                     text: messageData.text,
                     date: now,
-                    // date: `${now.getHours()}:${now.getMinutes()} ${now.get}`,
                 });
+                this.io.emit("newMessage", this.messageBuffer[this.messageBuffer.length - 1]);
             });
         });
     }

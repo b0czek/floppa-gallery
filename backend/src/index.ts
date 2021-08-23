@@ -11,7 +11,7 @@ const io = new Server(httpServer, {
         methods: ["GET", "POST"],
     },
 });
-httpServer.listen(3000);
+httpServer.listen(3001);
 
 // const chatServer =
 new ChatServer(io);
