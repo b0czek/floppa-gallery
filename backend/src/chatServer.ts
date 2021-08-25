@@ -1,4 +1,5 @@
 import { Namespace, Server, Socket } from "socket.io";
+import { validateMessage } from "./messageValidator";
 
 export interface Message {
     author: string;
@@ -36,14 +37,19 @@ export default class ChatServer {
             socket.on("messages", (callback) => {
                 callback(this.messageBuffer);
             });
-            socket.on("sendMessage", (messageData) => {
-                let now = new Date();
-                this.messageBuffer.push({
+            socket.on("sendMessage", (messageData, callback) => {
+                let message: Message = {
                     author: messageData.author,
                     text: messageData.text,
-                    date: now,
-                });
-                this.io.emit("newMessage", this.messageBuffer[this.messageBuffer.length - 1]);
+                    date: new Date(),
+                };
+                let validation = validateMessage(message);
+                if (validation === true) {
+                    this.messageBuffer.push(message);
+                    this.io.emit("newMessage", this.messageBuffer[this.messageBuffer.length - 1]);
+                }
+                // message client if the message was rejected or not
+                callback(validation);
             });
         });
     }

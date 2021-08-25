@@ -43,18 +43,28 @@ class Chat extends React.Component {
         return false;
     };
 
-    sendMessage = () => {
+    sendMessage = (e) => {
+        e.preventDefault();
         if (
             this.checkForRacialSlur(this.state.text) ||
             this.checkForRacialSlur(this.state.author)
         ) {
             return;
         }
-        this.socket.emit("sendMessage", {
-            text: this.state.text,
-            author: this.state.author,
-        });
-        this.setState({ text: "" });
+        this.socket.emit(
+            "sendMessage",
+            {
+                text: this.state.text,
+                author: this.state.author,
+            },
+            (response) => {
+                if (response === true) {
+                    this.setState({ text: "" });
+                } else {
+                    console.log(response);
+                }
+            }
+        );
     };
 
     componentDidMount() {
@@ -99,21 +109,23 @@ class Chat extends React.Component {
                     ></div>
                 </div>
                 <div className="controls">
-                    <input
-                        type="text"
-                        name="author"
-                        value={this.state.author}
-                        onChange={this.handleChange}
-                        placeholder="Name"
-                    />
-                    <input
-                        type="text"
-                        name="text"
-                        value={this.state.text}
-                        onChange={this.handleChange}
-                        placeholder="Message"
-                    />
-                    <input type="submit" value="Send" onClick={this.sendMessage} />
+                    <form>
+                        <input
+                            type="text"
+                            name="author"
+                            value={this.state.author}
+                            onChange={this.handleChange}
+                            placeholder="Name"
+                        />
+                        <input
+                            type="text"
+                            name="text"
+                            value={this.state.text}
+                            onChange={this.handleChange}
+                            placeholder="Message"
+                        />
+                        <input type="submit" value="Send" onClick={this.sendMessage} />
+                    </form>
                 </div>
             </div>
         );
