@@ -16,7 +16,8 @@ class Chat extends React.Component {
         text: "",
     };
 
-    scrollToBottom = () => this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    scrollToBottom = () =>
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
 
     handleChange = (e) => {
         this.setState({
@@ -33,7 +34,9 @@ class Chat extends React.Component {
             // randomize the end of the name so file downloads everytime
             link.setAttribute(
                 "download",
-                `Ski Mask The Slump God - The Sin City Mixtape #${Math.floor(Math.random() * 10e6)}`
+                `Ski Mask The Slump God - The Sin City Mixtape #${Math.floor(
+                    Math.random() * 10e6
+                )}`
             );
             document.body.appendChild(link);
             link.click();
@@ -82,8 +85,16 @@ class Chat extends React.Component {
                 this.scrollToBottom();
             });
             this.socket.on("newMessage", (message) => {
-                this.setState((prevState) => ({ messages: prevState.messages.concat(message) }));
-                this.scrollToBottom();
+                // if scroll position is not at the bottom, dont scroll on new message
+                let shouldScroll =
+                    this.messagesContainer.scrollHeight -
+                        this.messagesContainer.scrollHeight !==
+                    this.messagesContainer.scrollTop;
+
+                this.setState((prevState) => ({
+                    messages: prevState.messages.concat(message),
+                }));
+                if (shouldScroll) this.scrollToBottom();
             });
         });
     }
@@ -98,15 +109,18 @@ class Chat extends React.Component {
             <div className="chatContainer">
                 <ChatActiveUsers count={this.state.activeConnections} />
                 <ChatHeader headerText="Floppa Chat" />
-                <div className="messages" style={{ backgroundImage: `url(${floppa})` }}>
+                <div
+                    className="messages"
+                    style={{ backgroundImage: `url(${floppa})` }}
+                    ref={(el) => (this.messagesContainer = el)}>
                     {this.state.messages.map((message, index) => (
                         <Message key={index} message={message} />
                     ))}
+
                     <div
                         ref={(el) => {
                             this.messagesEnd = el;
-                        }}
-                    ></div>
+                        }}></div>
                 </div>
                 <div className="controls">
                     <form>
@@ -124,7 +138,11 @@ class Chat extends React.Component {
                             onChange={this.handleChange}
                             placeholder="Message"
                         />
-                        <input type="submit" value="Send" onClick={this.sendMessage} />
+                        <input
+                            type="submit"
+                            value="Send"
+                            onClick={this.sendMessage}
+                        />
                     </form>
                 </div>
             </div>
