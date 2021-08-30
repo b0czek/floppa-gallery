@@ -3,3 +3,6 @@ body {
     margin: 0;
     background-color: #131516;
 }
+* {
+    cursor: url("../imgs/cursor.png"), auto;
+}
