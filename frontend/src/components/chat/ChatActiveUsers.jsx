@@ -1,4 +1,4 @@
-import floppaHead from "../imgs/floppa-head.png";
+import floppaHead from "../../imgs/floppa-head.png";
 import styled from "styled-components";
 
 const ActiveUsersContainer = styled.div`
