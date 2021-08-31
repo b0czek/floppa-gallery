@@ -1,0 +1,22 @@
+.controlsContainer {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.controls {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+}
+.controlsInput {
+    width: 100%;
+}
+.controlsInput > input {
+    box-sizing: border-box;
+    width: 100%;
+
+    color: white;
+    background: #484a4b;
+    border: none;
+}

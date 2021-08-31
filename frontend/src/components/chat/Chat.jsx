@@ -5,7 +5,7 @@ import floppa from "../../imgs/floppa.gif";
 import "./Chat.css";
 import ChatHeader from "./ChatHeader";
 import ChatActiveUsers from "./ChatActiveUsers";
-
+import ChatControls from "./ChatControls";
 import Message from "./ChatMessage";
 
 class Chat extends React.Component {
@@ -84,7 +84,7 @@ class Chat extends React.Component {
             this.socket.on("newMessage", (message) => {
                 // if scroll position is not at the bottom, dont scroll on new message
                 let shouldScroll =
-                    this.messagesContainer.scrollHeight - this.messagesContainer.scrollHeight !==
+                    this.messagesContainer.scrollHeight - this.messagesContainer.clientHeight ===
                     this.messagesContainer.scrollTop;
 
                 this.setState((prevState) => ({
@@ -121,25 +121,14 @@ class Chat extends React.Component {
                             }}
                         ></div>
                     </div>
-                    <div className="controls">
-                        <form>
-                            <input
-                                type="text"
-                                name="author"
-                                value={this.state.author}
-                                onChange={this.handleChange}
-                                placeholder="Name"
-                            />
-                            <input
-                                type="text"
-                                name="text"
-                                value={this.state.text}
-                                onChange={this.handleChange}
-                                placeholder="Message"
-                            />
-                            <input type="submit" value="Send" onClick={this.sendMessage} />
-                        </form>
-                    </div>
+                    <ChatControls
+                        controls={{
+                            handleChange: this.handleChange,
+                            sendMessage: this.sendMessage,
+                            author: this.state.author,
+                            text: this.state.text,
+                        }}
+                    />
                 </div>
             </div>
         );

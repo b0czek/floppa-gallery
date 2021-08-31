@@ -33,9 +33,3 @@
 .messages::-webkit-scrollbar-thumb {
     background-color: rgba(30, 30, 30, 0.8);
 }
-
-.controls {
-    display: flex;
-    align-items: center;
-    align-content: center;
-}
