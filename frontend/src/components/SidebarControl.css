@@ -1,0 +1,28 @@
+.controlContainer {
+    display: flex;
+    width: 100%;
+    background-color: #232526;
+
+    margin-top: 7px;
+    height: 35px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    border: #434546 solid 1px;
+    padding: 5px;
+}
+.controlIconContainer {
+    width: 20%;
+}
+.controlIcon {
+    display: block;
+    height: 100%;
+    margin: auto;
+}
+.controlText {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -103,41 +103,43 @@ class Chat extends React.Component {
     render() {
         return (
             <div className="chatContainer">
-                <ChatActiveUsers count={this.state.activeConnections} />
-                <ChatHeader headerText="Floppa Chat" />
-                <div
-                    className="messages"
-                    style={{ backgroundImage: `url(${floppa})` }}
-                    ref={(el) => (this.messagesContainer = el)}
-                >
-                    {this.state.messages.map((message, index) => (
-                        <Message key={index} message={message} />
-                    ))}
-
+                <div className="chat">
+                    <ChatActiveUsers count={this.state.activeConnections} />
+                    <ChatHeader headerText="Floppa Chat" />
                     <div
-                        ref={(el) => {
-                            this.messagesEnd = el;
-                        }}
-                    ></div>
-                </div>
-                <div className="controls">
-                    <form>
-                        <input
-                            type="text"
-                            name="author"
-                            value={this.state.author}
-                            onChange={this.handleChange}
-                            placeholder="Name"
-                        />
-                        <input
-                            type="text"
-                            name="text"
-                            value={this.state.text}
-                            onChange={this.handleChange}
-                            placeholder="Message"
-                        />
-                        <input type="submit" value="Send" onClick={this.sendMessage} />
-                    </form>
+                        className="messages"
+                        style={{ backgroundImage: `url(${floppa})` }}
+                        ref={(el) => (this.messagesContainer = el)}
+                    >
+                        {this.state.messages.map((message, index) => (
+                            <Message key={index} message={message} />
+                        ))}
+
+                        <div
+                            ref={(el) => {
+                                this.messagesEnd = el;
+                            }}
+                        ></div>
+                    </div>
+                    <div className="controls">
+                        <form>
+                            <input
+                                type="text"
+                                name="author"
+                                value={this.state.author}
+                                onChange={this.handleChange}
+                                placeholder="Name"
+                            />
+                            <input
+                                type="text"
+                                name="text"
+                                value={this.state.text}
+                                onChange={this.handleChange}
+                                placeholder="Message"
+                            />
+                            <input type="submit" value="Send" onClick={this.sendMessage} />
+                        </form>
+                    </div>
                 </div>
             </div>
         );
