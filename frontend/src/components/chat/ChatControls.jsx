@@ -1,5 +1,14 @@
 import "./ChatControls.scss";
 
+const PostMessageIcon = () => (
+    <svg width="30" height="30" viewBox="0 0 24 24">
+        <polygon
+            points="3 12 8.61 14.992 17 8 9 17.455 9 21 12.164 16.887 18 20 21 3"
+            fill="#fff"
+        />
+    </svg>
+);
+
 const ChatControls = ({ controls }) => {
     return (
         <div className="controlsContainer">
@@ -20,12 +29,14 @@ const ChatControls = ({ controls }) => {
                         placeholder="Message"
                     />
                 </div>
-                <input
+                <button
                     type="submit"
                     value=""
                     onClick={controls.sendMessage}
                     className="sendMessage"
-                />
+                >
+                    <PostMessageIcon />
+                </button>
             </form>
         </div>
     );
