@@ -1,0 +1,61 @@
+.controlsContainer {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.controls {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+}
+
+$input-border-radius: 7px;
+$input-left-padding: 3%;
+.controlsInput {
+    width: 100%;
+    margin: 0 10px;
+    input {
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 10px;
+        height: 30px;
+
+        border: none;
+        border-radius: $input-border-radius;
+        color: white;
+
+        background: #484a4b;
+        padding-left: $input-left-padding;
+
+        &:focus {
+            transition: 0.1s;
+            outline: none;
+            padding: $input-left-padding / 2;
+            border-radius: $input-border-radius;
+            box-shadow: 0 0 0 2px #ccc;
+        }
+        &::placeholder {
+            color: #ccc;
+        }
+    }
+}
+
+.sendMessage {
+    position: relative;
+
+    border: none;
+    border-radius: 10px;
+
+    margin-top: 10px;
+
+    width: 65px;
+    height: 65px;
+
+    background: #484a4b;
+    color: white;
+
+    &::after {
+        position: absolute;
+    }
+}

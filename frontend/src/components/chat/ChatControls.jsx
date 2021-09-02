@@ -1,4 +1,4 @@
-import "./ChatControls.css";
+import "./ChatControls.scss";
 
 const ChatControls = ({ controls }) => {
     return (
@@ -20,7 +20,12 @@ const ChatControls = ({ controls }) => {
                         placeholder="Message"
                     />
                 </div>
-                <input type="submit" value="Send" onClick={controls.sendMessage} />
+                <input
+                    type="submit"
+                    value=""
+                    onClick={controls.sendMessage}
+                    className="sendMessage"
+                />
             </form>
         </div>
     );
