@@ -16,7 +16,11 @@ class Chat extends React.Component {
         text: "",
     };
 
-    scrollToBottom = () => this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    scrollToBottom = () =>
+        this.messagesContainer.scrollTo({
+            top: this.messagesContainer.scrollHeight - this.messagesContainer.clientHeight,
+            behavior: "smooth",
+        });
 
     handleChange = (e) => {
         this.setState({
@@ -82,10 +86,10 @@ class Chat extends React.Component {
                 this.scrollToBottom();
             });
             this.socket.on("newMessage", (message) => {
-                // if scroll position is not at the bottom, dont scroll on new message
+                // if scroll position is not at the bottom(+50px), dont scroll on new message
                 let shouldScroll =
-                    this.messagesContainer.scrollHeight - this.messagesContainer.clientHeight ===
-                    this.messagesContainer.scrollTop;
+                    this.messagesContainer.scrollHeight - this.messagesContainer.clientHeight <=
+                    this.messagesContainer.scrollTop + 50;
 
                 this.setState((prevState) => ({
                     messages: prevState.messages.concat(message),
@@ -114,12 +118,6 @@ class Chat extends React.Component {
                         {this.state.messages.map((message, index) => (
                             <Message key={index} message={message} />
                         ))}
-
-                        <div
-                            ref={(el) => {
-                                this.messagesEnd = el;
-                            }}
-                        ></div>
                     </div>
                     <ChatControls
                         controls={{
